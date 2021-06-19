@@ -1,6 +1,6 @@
 require('dotenv').config()
 
-const path = require('path')
+// const path = require('path')
 const cors = require('cors')
 const express = require('express')
 
@@ -18,7 +18,11 @@ const port = process.env.PORT
 //   res.sendFile(path.join(__dirname, 'client/dist', 'index.html'))
 // })
 server.get('/api', (req, res) => {
-  res.json({ message: `${process.env.COHORT} ROCKS` })
+  res.json({ message: `${process.env.COHORT} TO ALTREST APP` })
+})
+
+server.use((req, res) => {
+    res.status(404).json({ message: 'Sorry DB not found' })
 })
 
 server.listen(port, () => {
