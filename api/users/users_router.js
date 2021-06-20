@@ -11,5 +11,13 @@ router.get('/users', (req, res, next) => {
     .catch(next); 
 });
 
+router.get('/users/:id', (req, res, next) => {
+  helpers.findById(res.params.id)
+    .then(users => {
+      res.status(200).json(users)
+    })
+    .catch(next); 
+});
+
 
 module.exports = router

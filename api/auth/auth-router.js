@@ -15,7 +15,7 @@ router.post('/register', checkEmailFree, (req, res, next) => {
 
   const { firstName, lastName, email, password, role } = req.body
   const hash = bcrypt.hashSync(password, 8)
-  User.add({ firstName, lastName, email, role, password: hash })
+  User.addUser({ firstName, lastName, email, role, password: hash })
     .then(newUser => {
       res.status(201).json(newUser);
     })
