@@ -24,13 +24,6 @@ exports.up = function (knex) {
       table.binary('request_image', 138)
       table.string('urgency', 138)
         .notNullable()
-      // table.integer('user_id')
-      //   .unsigned()
-      //   .notNullable()
-      //   .references('user_id')
-      //   .inTable('users')
-      //   .onDelete('CASCADE')
-      //   .onUpdate('CASCADE')
       table.timestamp('created_at', { precision: 6 })
         .defaultTo(knex.fn.now(6));
     })
