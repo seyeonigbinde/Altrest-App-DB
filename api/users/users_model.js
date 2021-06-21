@@ -4,14 +4,21 @@ const db = require('../data/db-config')
 
 function find() {
   return db("users as u")
-  .select("id", "firstName", "lastName",
+  .select("user_id", "firstName", "lastName",
    "email", "password", "role")
-  .orderBy("id");
+  .orderBy("user_id");
+}
+
+function findMaintenance() {
+  return db("maintenance as m")
+  .select("maintenance_id", "title", "request",
+   "request_image", "urgency")
+  .orderBy("maintenance_id");
 }
 
 function findBy(filter) {
   return db("users").where(filter)
-  .orderBy("id")
+  .orderBy("user_id")
 }
 
 // async function add(user) {
@@ -21,21 +28,28 @@ function findBy(filter) {
 // }
 
 const addUser = (user) =>{
-  return db("users").insert(user,["id", "firstName", "lastName",
+  return db("users").insert(user,["user_id", "firstName", "lastName",
   "email", "password", "role"]);
+}
+
+const addRequest = (maintenance) =>{
+  return db("maintenance").insert(maintenance,["maintenance_id", "title", "request",
+  "request_image", "urgency"]);
 }
 
 function findById(id) {
   return db("users as u")
-    .select("id", "firstName", "lastName",
+    .select("user_id", "firstName", "lastName",
      "email", "password", "role")
-    .where("id", id)
+    .where("user_id", id)
     .first()
 }
 
 module.exports = {
   find,
+  findMaintenance,
   addUser,
+  addRequest,
   findBy,
   findById
 }

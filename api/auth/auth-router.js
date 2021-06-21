@@ -38,7 +38,7 @@ router.post('/login', checkPayload, checkEmailExists, (req, res, next) => {
 
 function tokenBuilder(user) {
   const payload = {
-    subject: user.id,
+    subject: user.user_id,
     email: user.email,
   }
   const options = {
