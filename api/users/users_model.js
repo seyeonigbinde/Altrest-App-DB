@@ -9,7 +9,7 @@ function find() {
   .orderBy("user_id");
 }
 
-function findMaintenance() {
+function findRequest() {
   return db("maintenance as m")
   .select("maintenance_id", "title", "request",
    "request_image", "urgency")
@@ -37,19 +37,28 @@ const addRequest = (maintenance) =>{
   "request_image", "urgency"]);
 }
 
-function findById() {
+function findById(user_id) {
   return db("users as u")
     .select("user_id", "firstName", "lastName",
      "email", "password", "role")
-    .where("user_id", 1)
+    .where({user_id})
+    .first()
+}
+
+function findRequestById(maintenance_id) {
+  return db("maintenance as m")
+    .select("maintenance_id", "title", "request",
+    "request_image", "urgency")
+    .where({maintenance_id})
     .first()
 }
 
 module.exports = {
   find,
-  findMaintenance,
+  findRequest,
   addUser,
   addRequest,
   findBy,
-  findById
+  findById,
+  findRequestById
 }

@@ -13,20 +13,37 @@ router.get('/users', (req, res, next) => {
     .catch(next); 
 });
 
-router.get('/users/:id', (req, res, next) => {
-  helpers.findById(res.params.id)
-    .then(users => {
-      res.status(200).json(users)
-    })
-    .catch(next); 
+
+router.get('/user/:id', (req, res) => {
+  const user_id = req.params.id 
+  User.findById(user_id)
+  .then(user => {
+      res.json(user);
+  })
+  .catch(err => res.status(500).json({ 
+      message: err.message, 
+      stack: err.stack 
+  }))
 });
 
 router.get('/maintenance', (req, res, next) => {
-  helpers.findMaintenance()
+  helpers.findRequest()
     .then(maintenance => {
       res.status(200).json(maintenance)
     })
     .catch(next); 
+});
+
+router.get('/maintenance/:id', (req, res) => {
+  const maintenance_id = req.params.id 
+  User.findRequestById(maintenance_id)
+  .then(maintenance => {
+      res.json(maintenance);
+  })
+  .catch(err => res.status(500).json({ 
+      message: err.message, 
+      stack: err.stack 
+  }))
 });
 
 router.post('/maintenance', (req, res, next) => {

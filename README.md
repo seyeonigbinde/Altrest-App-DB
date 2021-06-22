@@ -1,60 +1,99 @@
-# Build Week Scaffolding for Node and PostgreSQL
+# ALTREST-APP-DB
 
-## Video Tutorial
+# API
 
-The following tutorial explains how to set up this project using PostgreSQL and Heroku.
+- https://altrest-app.herokuapp.com/
 
-[![Setting up PostgreSQL for Build Week](https://img.youtube.com/vi/kTO_tf4L23I/maxresdefault.jpg)](https://www.youtube.com/watch?v=kTO_tf4L23I)
+## Endpoints
 
-## Requirements
+## Login
 
-- [PostgreSQL, pgAdmin 4](https://www.postgresql.org/download/) and [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli) installed in your local machine.
-- A Heroku app with the [Heroku PostgreSQL Addon](https://devcenter.heroku.com/articles/heroku-postgresql#provisioning-heroku-postgres) added to it.
-- Development and testing databases created with [pgAdmin 4](https://www.pgadmin.org/docs/pgadmin4/4.29/database_dialog.html).
+**POST/api/auth/login**
 
-## Starting a New Project
+-  {
+  -   "email": "abc123@gmail.com",
+ -   "password": "123456" 
+ - }
 
-- Create a new repository using this template, and clone it to your local.
-- Create a `.env` file and follow the instructions inside `knexfile.js`.
-- Fix the scripts inside `package.json` to use your Heroku app.
 
-## Scripts
 
-- **start**: Runs the app.
-- **server**: Runs the app with Nodemon.
-- **migrate**: Migrates the local development database to the latest.
-- **rollback**: Rolls back migrations in the local development database.
-- **seed**: Truncates all tables in the local development database, feel free to add more seed files.
-- **test**: Runs tests.
-- **deploy**: Deploys the main branch to Heroku.
+## Register
 
-**The following scripts NEED TO BE EDITED before using: replace `YOUR_HEROKU_APP_NAME_HERE`**
+**POST/api/auth/register**
 
-- **migrateh**: Migrates the Heroku database to the latest.
-- **rollbackh**: Rolls back migrations in the Heroku database.
-- **databaseh**: Interact with the Heroku database from the command line using psql.
-- **seedh**: Runs all seeds in the Heroku database.
+-  [
+-   {
+-       "user_id": 2,
+-       "firstName": "Seye",
+-       "lastName": "Oni",
+-        "email": "abc123@gmail.com",
+-        "password": "123456" 
+-        "role": "Tenant"
+-    }
+-   ]
 
-## Hot Tips
 
-- Figure out the connection to the database and deployment before writing any code.
+## Users
 
-- If you need to make changes to a migration file that has already been released to Heroku, follow this sequence:
+**GET/api/users**
 
-  1. Roll back migrations in the Heroku database
-  2. Deploy the latest code to Heroku
-  3. Migrate the Heroku database to the latest
+- [
+  -  {
+   -     "user_id": 1,
+   -     "firstName": "Seye",
+   -     "lastName": "Oni",
+   -     "email": "abcd@gmail.com",
+   -     "password": "$2a$08$8/VP7cPoVxjyGgMSsdqWAeG4SctnMs5Zhqbq/VbCD4TOXgeSH5Sse",
+   -     "role": "Tenant"
+   - }
+ - ]
 
-- If your frontend devs are clear on the shape of the data they need, you can quickly build provisional endpoints that return mock data. They shouldn't have to wait for you to build the entire backend.
+ **GET/api/user/:id**
 
-- Keep your endpoints super lean: the bulk of the code belongs inside models and other middlewares.
 
-- Validating and sanitizing client data using a library is much less work than doing it manually.
+  -  {
+   -     "user_id": 1,
+   -     "firstName": "Seye",
+   -     "lastName": "Oni",
+   -     "email": "abcd@gmail.com",
+   -     "password": "$2a$08$8/VP7cPoVxjyGgMSsdqWAeG4SctnMs5Zhqbq/VbCD4TOXgeSH5Sse",
+   -     "role": "Tenant"
+   - }
+ 
 
-- Revealing crash messages to clients is a security risk, but during development it's helpful if your frontend devs are able to tell you what crashed.
+## Maintenance
 
-- PostgreSQL comes with [fantastic built-in functions](https://hashrocket.com/blog/posts/faster-json-generation-with-postgresql) for hammering rows into whatever JSON shape.
+**GET/api/maintenance**
 
-- If you want to edit a migration that has already been released but don't want to lose all the data, make a new migration instead. This is a more realistic flow for production apps: prod databases are never migrated down. We can migrate Heroku down freely only because there's no valuable data from customers in it. In this sense, Heroku is acting more like a staging environment than production.
+-  [
+ -     {
+ -       "maintenance_id": 1,
+ -       "title": "Repairs of Toilet",
+ -       "request": "This is very bad and terrible",
+ -       "request_image": "www.#.com",
+ -       "urgency": "Very Important"
+ -   }
+ - ]
 
-- If your fronted devs are interested in running the API locally, help them set up PostgreSQL & pgAdmin in their machines, and teach them how to run migrations in their local. This empowers them to (1) help you troubleshoot bugs, (2) obtain the latest code by simply doing `git pull` and (3) work with their own data, without it being wiped every time you roll back the Heroku db. Collaboration is more fun and direct, and you don't need to deploy as often.
+**GET/api/maintenance/:id**
+
+
+  -   {
+ -       "maintenance_id": 1,
+ -       "title": "Repairs of Toilet",
+ -       "request": "This is very bad and terrible",
+ -       "request_image": "www.#.com",
+ -       "urgency": "Very Important"
+ -   }
+ 
+
+**POST/api/maintenance**
+
+-   {
+ -       "maintenance_id": 1,
+ -       "title": "Repairs of Toilet",
+ -       "request": "This is very bad and terrible",
+ -       "request_image": "www.#.com",
+ -       "urgency": "Very Important"
+ -   }
+
