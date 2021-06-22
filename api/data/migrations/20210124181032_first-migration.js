@@ -17,11 +17,12 @@ exports.up = function (knex) {
 
     .createTable('maintenance', table => {
       table.increments('maintenance_id')
-      table.string('title', 50)
+      table.string('title', 500)
         .notNullable()
-      table.string('request', 500)
+      table.string('request', 1500)
         .notNullable()
-      table.binary('request_image', 138)
+      table.string('request_image', 238)
+          .notNullable()
       table.string('urgency', 138)
         .notNullable()
       table.timestamp('created_at', { precision: 6 })

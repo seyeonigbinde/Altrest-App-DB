@@ -37,11 +37,11 @@ const addRequest = (maintenance) =>{
   "request_image", "urgency"]);
 }
 
-function findById(id) {
+function findById() {
   return db("users as u")
     .select("user_id", "firstName", "lastName",
      "email", "password", "role")
-    .where("user_id", id)
+    .where("user_id", 1)
     .first()
 }
 
