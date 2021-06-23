@@ -1,11 +1,12 @@
 const express = require('express')
 const helpers = require('./users_model')
+const restricted = require('../middlewares/restricted')
 
 const User = require('../users/users_model')
 
 const router = express.Router()
 
-router.get('/users', (req, res, next) => {
+router.get('/users', restricted, (req, res, next) => {
   helpers.find()
     .then(users => {
       res.status(200).json(users)
@@ -14,7 +15,7 @@ router.get('/users', (req, res, next) => {
 });
 
 
-router.get('/user/:id', (req, res) => {
+router.get('/user/:id', restricted, (req, res) => {
   const user_id = req.params.id 
   User.findById(user_id)
   .then(user => {
@@ -26,7 +27,7 @@ router.get('/user/:id', (req, res) => {
   }))
 });
 
-router.get('/maintenance', (req, res, next) => {
+router.get('/maintenance', restricted, (req, res, next) => {
   helpers.findRequest()
     .then(maintenance => {
       res.status(200).json(maintenance)
@@ -34,7 +35,7 @@ router.get('/maintenance', (req, res, next) => {
     .catch(next); 
 });
 
-router.get('/maintenance/:id', (req, res) => {
+router.get('/maintenance/:id', restricted, (req, res) => {
   const maintenance_id = req.params.id 
   User.findRequestById(maintenance_id)
   .then(maintenance => {
@@ -46,7 +47,7 @@ router.get('/maintenance/:id', (req, res) => {
   }))
 });
 
-router.post('/maintenance', (req, res, next) => {
+router.post('/maintenance', restricted, (req, res, next) => {
 
   const { title, request, request_image, urgency } = req.body
   User.addRequest({ title, request, request_image, urgency  })
