@@ -6,7 +6,7 @@ const User = require('../users/users_model')
 
 const router = express.Router()
 
-router.get('/users', restricted, (req, res, next) => {
+router.get('/users', (req, res, next) => {
   helpers.find()
     .then(users => {
       res.status(200).json(users)
@@ -15,7 +15,7 @@ router.get('/users', restricted, (req, res, next) => {
 });
 
 
-router.get('/user/:id', restricted, (req, res) => {
+router.get('/user/:id', (req, res) => {
   const user_id = req.params.id 
   User.findById(user_id)
   .then(user => {
@@ -27,7 +27,7 @@ router.get('/user/:id', restricted, (req, res) => {
   }))
 });
 
-router.get('/maintenance', restricted, (req, res, next) => {
+router.get('/maintenance', (req, res, next) => {
   helpers.findRequest()
     .then(maintenance => {
       res.status(200).json(maintenance)
@@ -35,7 +35,7 @@ router.get('/maintenance', restricted, (req, res, next) => {
     .catch(next); 
 });
 
-router.get('/maintenance/:id', restricted, (req, res) => {
+router.get('/maintenance/:id', (req, res) => {
   const maintenance_id = req.params.id 
   User.findRequestById(maintenance_id)
   .then(maintenance => {
