@@ -47,14 +47,25 @@ router.get('/maintenance/:id', (req, res) => {
   }))
 });
 
-router.post('/maintenance', restricted, (req, res, next) => {
-
-  const { title, request, request_image, urgency } = req.body
-  User.addRequest({ title, request, request_image, urgency  })
+router.post('/maintenance', (req, res, next) => {
+  User.addRequest(req.body)
     .then(newRequest => {
       res.status(201).json(newRequest);
     })
     .catch(next);
 })
+
+router.delete("/maintenance/:id", (req, res, next) => {
+  const maintenance_id = req.params.id 
+  User.deleteRequest(maintenance_id)
+    .then((count) => {
+      if (count > 0) {
+        res.status(204).end();
+      } else {
+        res.status(404).json({ message: "maintenance not found" });
+      }
+    })
+    .catch(next);
+});
 
 module.exports = router

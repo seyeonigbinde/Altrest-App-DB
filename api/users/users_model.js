@@ -46,7 +46,13 @@ function findRequestById(maintenance_id) {
     .where({maintenance_id})
     .first()
 }
-
+function deleteRequest(maintenance_id) {
+  return db("maintenance as m")
+    .select("maintenance_id", "title", "request",
+    "request_image", "urgency")
+    .where({maintenance_id})
+      .delete()
+}
 
 
 module.exports = {
@@ -56,5 +62,6 @@ module.exports = {
   addRequest,
   findBy,
   findById,
-  findRequestById
+  findRequestById,
+  deleteRequest
 }
