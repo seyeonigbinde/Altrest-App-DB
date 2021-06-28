@@ -35,6 +35,22 @@ router.get('/maintenance', (req, res, next) => {
     .catch(next); 
 });
 
+router.get('/property', (req, res, next) => {
+  helpers.findProperty()
+    .then(property => {
+      res.status(200).json(property)
+    })
+    .catch(next); 
+});
+
+router.get('/tenants', (req, res, next) => {
+  helpers.findTenant()
+    .then(tenant => {
+      res.status(200).json(tenant)
+    })
+    .catch(next); 
+});
+
 router.get('/maintenance/:id', (req, res) => {
   const maintenance_id = req.params.id 
   User.findRequestById(maintenance_id)

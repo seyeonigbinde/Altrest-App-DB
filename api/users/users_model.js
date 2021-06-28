@@ -11,22 +11,25 @@ function find() {
 
 function findRequest() {
   return db("maintenance as m")
+  .leftJoin("tenants as t", "t.tenant_id", "=", "m.tenant_id")
   .select("maintenance_id", "title", "request",
-   "request_image", "urgency")
+   "request_image", "urgency", "tenant_name")
   .orderBy("maintenance_id");
 }
 
 function findTenant() {
   return db("tenants as te")
+  .leftJoin("property as p", "p.property_id", "=", "te.property_id")
   .select("tenant_id", "tenant_apartment", "tenant_name",
-   "tenant_email", "tenant_phone", "tenant_occupation")
+   "tenant_email", "tenant_phone", "tenant_occupation", "property_address", "property_state")
   .orderBy("tenant_id");
 }
 
 function findProperty() {
   return db("property as pr")
+  .leftJoin("users as u", "u.user_id", "=", "pr.user_id")
   .select("property_id", "owner", "property_address",
-   "property_city", "property_state")
+   "property_city", "property_state", "user_firstName", "user_lastName")
   .orderBy("property_id");
 }
 
