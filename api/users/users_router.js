@@ -87,7 +87,7 @@ router.post('/property', (req, res, next) => {
     .catch(next);
 })
 
-router.post('/tenant', (req, res, next) => {
+router.post('/tenants', (req, res, next) => {
   User.addTenant(req.body)
     .then(newTenant => {
       res.status(201).json(newTenant);

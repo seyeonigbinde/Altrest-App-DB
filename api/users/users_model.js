@@ -20,7 +20,7 @@ function findRequest() {
 function findTenant() {
   return db("tenants as te")
   .leftJoin("property as p", "p.property_id", "=", "te.property_id")
-  .select("tenant_id", "tenant_apartment", "tenant_name",
+  .select("tenant_id", "apartment", "tenant_name",
    "tenant_email", "tenant_phone", "tenant_occupation", "property_address", "property_state")
   .orderBy("tenant_id");
 }
@@ -29,7 +29,7 @@ function findProperty() {
   return db("property as pr")
   .leftJoin("users as u", "u.user_id", "=", "pr.user_id")
   .select("property_id", "owner", "property_address",
-   "property_city", "property_state", "user_firstName", "user_lastName")
+   "property_city", "property_state", "firstName", "lastName")
   .orderBy("property_id");
 }
 
