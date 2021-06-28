@@ -15,7 +15,7 @@ router.get('/users', (req, res, next) => {
 });
 
 
-router.get('/user/:id', (req, res) => {
+router.get('/user/:user_id', (req, res) => {
   const user_id = req.params.id 
   User.findById(user_id)
   .then(user => {
@@ -47,10 +47,34 @@ router.get('/maintenance/:id', (req, res) => {
   }))
 });
 
+router.post('/users', (req, res, next) => {
+  User.addUser(req.body)
+    .then(newUser => {
+      res.status(201).json(newUser);
+    })
+    .catch(next);
+})
+
 router.post('/maintenance', (req, res, next) => {
   User.addRequest(req.body)
     .then(newRequest => {
       res.status(201).json(newRequest);
+    })
+    .catch(next);
+})
+
+router.post('/property', (req, res, next) => {
+  User.addProperty(req.body)
+    .then(newProperty => {
+      res.status(201).json(newProperty);
+    })
+    .catch(next);
+})
+
+router.post('/tenant', (req, res, next) => {
+  User.addTenant(req.body)
+    .then(newTenant => {
+      res.status(201).json(newTenant);
     })
     .catch(next);
 })
@@ -67,5 +91,14 @@ router.delete("/maintenance/:id", (req, res, next) => {
     })
     .catch(next);
 });
+
+router.get('/:property_id', (req, res, next) => {
+  const { property_id } = req.params
+  User.getPropertyById(property_id)
+    .then(property => {
+      res.json(property)
+    })
+    .catch(next)
+})
 
 module.exports = router

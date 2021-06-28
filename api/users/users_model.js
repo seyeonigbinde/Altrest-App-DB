@@ -5,7 +5,7 @@ const db = require('../data/db-config')
 function find() {
   return db("users as u")
   .select("user_id", "firstName", "lastName",
-   "email", "password", "role")
+   "email", "phone", "address", "location", "password")
   .orderBy("user_id");
 }
 
@@ -16,6 +16,20 @@ function findRequest() {
   .orderBy("maintenance_id");
 }
 
+function findTenant() {
+  return db("tenants as te")
+  .select("tenant_id", "tenant_apartment", "tenant_name",
+   "tenant_email", "tenant_phone", "tenant_occupation")
+  .orderBy("tenant_id");
+}
+
+function findProperty() {
+  return db("property as pr")
+  .select("property_id", "owner", "property_address",
+   "property_city", "property_state")
+  .orderBy("property_id");
+}
+
 function findBy(filter) {
   return db("users").where(filter)
   .orderBy("user_id")
@@ -23,7 +37,7 @@ function findBy(filter) {
 
 const addUser = (user) =>{
   return db("users").insert(user,["user_id", "firstName", "lastName",
-  "email", "password", "role"]);
+  "email", "phone", "address", "location", "password"]);
 }
 
 const addRequest = (maintenance) =>{
@@ -31,10 +45,20 @@ const addRequest = (maintenance) =>{
   "request_image", "urgency"]);
 }
 
+const addProperty = (property) =>{
+  return db("property").insert(property,["property_id", "owner", "property_address",
+  "property_city", "property_state"]);
+}
+
+const addTenant = (tenant) =>{
+  return db("tenants").insert(tenant,["tenant_id", "apartment", "tenant_name",
+  "tenant_email", "tenant_phone", "tenant_occupation"]);
+}
+
 function findById(user_id) {
   return db("users as u")
     .select("user_id", "firstName", "lastName",
-     "email", "password", "role")
+    "email", "phone", "address", "location", "password")
     .where({user_id})
     .first()
 }
@@ -54,14 +78,53 @@ function deleteRequest(maintenance_id) {
       .delete()
 }
 
+async function getPropertyById(property_id) { 
+  const findProperty = await db('property as pr')
+  .leftJoin('tenants as te', 'pr.property_id', '=', 'te.property_id')
+  .select('pr.*', 'te.*')
+  .where ('pr.property_id', property_id)
+  .orderBy('te.apartment', 'asc')
+
+  const transformed ={
+    property_id: findProperty[0].property_id,
+    owner: findProperty[0].owner,
+    property_address: findProperty[0].property_address,
+    property_city: findProperty[0].property_city,
+    property_state: findProperty[0].property_state,
+    created_at: findProperty[0].created_at,
+    tenants: []
+  }
+
+  findProperty.forEach(findProperty => {
+    if (findProperty.tenant_id){
+      transformed.tenants.push({
+        tenant_id: findProperty.tenant_id,
+        apartment: findProperty.apartment,
+        tenant_name: findProperty.tenant_name,
+        tenant_email: findProperty.tenant_email,
+        tenant_phone: findProperty.tenant_phone,
+        tenant_occupation: findProperty.tenant_occupation,
+      })
+    }
+  })
+
+  return transformed
+  
+}
+
 
 module.exports = {
   find,
   findRequest,
+  findTenant,
+  findProperty,
   addUser,
   addRequest,
+  addProperty,
+  addTenant,
   findBy,
   findById,
   findRequestById,
-  deleteRequest
+  deleteRequest,
+  getPropertyById
 }

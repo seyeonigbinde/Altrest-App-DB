@@ -8,11 +8,53 @@ exports.up = function (knex) {
         .notNullable()
       table.string('email', 138)
         .notNullable().unique()
+      table.string('phone', 11)
+        .notNullable().unique()
+      table.string('address', 500)
+        .notNullable()
+      table.string('location', 50)
+        .notNullable()
       table.string('password', 138)
         .notNullable()
-      table.string('role', 138)
-        .notNullable()
       table.timestamps(false, true)
+    })
+
+    .createTable('property', table => {
+      table.increments('property_id')
+      table.string('owner', 138)
+        .notNullable()
+      table.string('property_address', 500)
+        .notNullable()
+      table.string('property_city', 138)
+        .notNullable()
+      table.string('property_state', 11)
+        .notNullable()
+      table.timestamp('created_at', { precision: 6 })
+        .defaultTo(knex.fn.now(6));
+      table.integer('user_id')
+        .unsigned()
+        .references('user_id')
+        .inTable('users')
+        .onDelete('CASCADE')
+    })
+
+    .createTable('tenants', table => {
+      table.increments('tenant_id')
+      table.string('apartment', 138)
+        .notNullable()
+      table.string('tenant_name', 138)
+        .notNullable()
+      table.string('tenant_email', 138)
+        .notNullable()
+      table.string('tenant_phone', 11)
+        .notNullable()
+      table.string('tenant_occupation', 138)
+        .notNullable()
+      table.integer('property_id')
+        .unsigned()
+        .references('property_id')
+        .inTable('property')
+        .onDelete('CASCADE')
     })
 
     .createTable('maintenance', table => {
@@ -27,11 +69,18 @@ exports.up = function (knex) {
         .notNullable()
       table.timestamp('created_at', { precision: 6 })
         .defaultTo(knex.fn.now(6));
+      table.integer('tenant_id')
+        .unsigned()
+        .references('tenant_id')
+        .inTable('tenants')
+        .onDelete('CASCADE')
     })
 }
 
 exports.down = function (knex) {
   return knex.schema
     .dropTableIfExists('maintenance')
+    .dropTableIfExists('tenants')
+    .dropTableIfExists('property')
     .dropTableIfExists('users')
 }

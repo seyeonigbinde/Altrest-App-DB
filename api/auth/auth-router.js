@@ -13,9 +13,9 @@ const { checkPayload,
 
 router.post('/register', checkEmailFree, (req, res, next) => {
 
-  const { firstName, lastName, email, password, role } = req.body
+  const { firstName, lastName, email, phone, address, password, location } = req.body
   const hash = bcrypt.hashSync(password, 8)
-  User.addUser({ firstName, lastName, email, role, password: hash })
+  User.addUser({ firstName, lastName, email, phone, address, location, password: hash })
     .then(newUser => {
       res.status(201).json(newUser);
     })
