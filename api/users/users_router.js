@@ -15,7 +15,7 @@ router.get('/users', (req, res, next) => {
 });
 
 
-router.get('/user/:user_id', (req, res) => {
+router.get('/user/:id', (req, res) => {
   const user_id = req.params.id 
   User.findById(user_id)
   .then(user => {
@@ -108,8 +108,8 @@ router.delete("/maintenance/:id", (req, res, next) => {
     .catch(next);
 });
 
-router.get('/:property_id', (req, res, next) => {
-  const { property_id } = req.params
+router.get('property/:id', (req, res, next) => {
+  const { property_id } = req.params.id
   User.getPropertyById(property_id)
     .then(property => {
       res.json(property)
